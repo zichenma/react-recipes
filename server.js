@@ -1,9 +1,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config({path: 'variables.env'});
-mongoose.connect(process.env.MONGO_URI)
+
+const Recipe = require('./models/Recipe');
+const User = require('./models/User');
+
+// connect to database
+
+mongoose.connect(process.env.MONGO_URI, {autoIndex: false})
 .then(() => console.log('DB connected'))
 .catch(err => console.error(err));
+
+
+// Initialize application
 
 const app = express();
 
