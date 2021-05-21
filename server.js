@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 require('dotenv').config({path: 'variables.env'});
 
 const Recipe = require('./models/Recipe');
@@ -30,6 +31,13 @@ mongoose.connect(process.env.MONGO_URI, {autoIndex: false})
 // Initialize application
 
 const app = express();
+
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+}
+
+app.use(cors(corsOptions));
 
 // Greate GraphiQL application
 
