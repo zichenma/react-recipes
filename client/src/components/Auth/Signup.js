@@ -1,34 +1,50 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { SIGNUP_USER } from '../../queries';
+import Error from '../../components/Error';
 
 
 
 function Signup() {
-    const [formData, setFormData] = useState({
+    const initialState = {
         username: '',
         email: '',
         password: '',
         passwordConfirmation: ''
-    });
+    };
+    const [formData, setFormData] = useState({...initialState});
+    const [gqlError, setError] = useState();
+    const [gqlLoading, setGqlLoading] = useState(false);
     
-    const [signupUser, { data }] = useMutation(SIGNUP_USER);
+
+    const [ mutate ] = useMutation(SIGNUP_USER);
 
     const handleChange = event => {
         const { name, value } = event.target;
         setFormData({...formData, [name] : value });
     }
 
-    const handleSubmit = event => {
+    const clearState = () => {
+        setFormData(initialState);
+    }
+
+    const handleSubmit = async event => {
         event.preventDefault();
         const { username, email, password } = formData;
-        signupUser({variables : { username, email, password } });
-        setFormData({
-            username: '',
-            email: '',
-            password: '',
-            passwordConfirmation: ''
-        });
+        
+        try {
+            const { loading } = await mutate({variables : { username, email, password } });
+            setGqlLoading(loading);
+        } catch (e) {
+            setError(e);
+        }
+        clearState();
+    }
+
+    const validateForm = function() {
+        const { username, email, password, passwordConfirmation } = formData;
+        const isInvalid = !username || !email || !password || (password !== passwordConfirmation);
+        return isInvalid;
     }
 
     return (
@@ -39,7 +55,8 @@ function Signup() {
                     <input type="email" name="email" placeholder="email address" value={formData.email} onChange={handleChange}/>
                     <input type="password" name="password" placeholder="password" value={formData.password} onChange={handleChange}/>
                     <input type="password" name="passwordConfirmation" placeholder="Confirm Password" value={formData.passwordConfirmation} onChange={handleChange}/>
-                    <button type="submit" className="button-primary">Submit</button>
+                    <button type="submit" className="button-primary" disabled={ gqlLoading || validateForm() }>Submit</button>
+                    { gqlError && <Error error={gqlError } />}
                 </form>
         </div>
     )
