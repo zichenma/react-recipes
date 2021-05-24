@@ -33,7 +33,9 @@ function Signup() {
         const { username, email, password } = formData;
         
         try {
-            const { loading } = await mutate({variables : { username, email, password } });
+            const { data, loading } = await mutate({variables : { username, email, password } });
+            const { token } = data.signupUser;
+            localStorage.setItem('token', token);
             setGqlLoading(loading);
         } catch (e) {
             setError(e);

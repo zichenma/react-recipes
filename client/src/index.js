@@ -5,12 +5,29 @@ import './index.css';
 import App from './components/App';
 import Signin from './components/Auth/Signin';
 import Signup from './components/Auth/Signup';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from '@apollo/client';
+// import ApolloClient from 'apollo-boost';
+import { ApolloClient, ApolloProvider } from '@apollo/client';
 
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4444/graphql'
+  uri: 'http://localhost:4444/graphql',
+  // fetchOptions will allow send token to backend
+  fetchOptions: {
+    credentials: 'include'
+  },
+  request: operation => {
+    const token = localStorage.getItem('token');
+    operation.setContext({
+      headers: {
+        authorization: token
+      }
+    })
+  },
+  onError: ({ networkError }) => {
+    if (networkError) {
+      console.log('Network Error', networkError);
+    }
+  }
 })
 
 const Root = () => {

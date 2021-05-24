@@ -32,6 +32,8 @@ function Signin() {
         
         try {
             const { data, loading } = await mutate({variables : { username, password } });
+            const { token } = data.signinUser;
+            localStorage.setItem('token', token);
             setGqlLoading(loading);
         } catch (e) {
             setError(e);
