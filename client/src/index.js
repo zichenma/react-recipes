@@ -5,24 +5,31 @@ import './index.css';
 import App from './components/App';
 import Signin from './components/Auth/Signin';
 import Signup from './components/Auth/Signup';
-// import ApolloClient from 'apollo-boost';
-import { ApolloClient, ApolloProvider } from '@apollo/client';
+import withSession from './components/withSession';
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
+
+
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4444/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('token');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? token : "",
+    }
+  }
+});
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4444/graphql',
-  // fetchOptions will allow send token to backend
-  fetchOptions: {
-    credentials: 'include'
-  },
-  request: operation => {
-    const token = localStorage.getItem('token');
-    operation.setContext({
-      headers: {
-        authorization: token
-      }
-    })
-  },
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
   onError: ({ networkError }) => {
     if (networkError) {
       console.log('Network Error', networkError);
@@ -30,8 +37,7 @@ const client = new ApolloClient({
   }
 })
 
-const Root = () => {
-  return (
+const Root = () => (
     <Router>
      <Switch>
        <Route path="/" exact component={App} />
@@ -40,13 +46,15 @@ const Root = () => {
        <Redirect to="/" />
      </Switch>
   </Router>
-  )
-}
+)
+
+const RootWithSession = withSession(Root);
+
 
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <Root />
+      < RootWithSession />
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')

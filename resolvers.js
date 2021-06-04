@@ -14,6 +14,20 @@ exports.resolvers = {
         getAllRecipes: async (root, args, { Recipe }) => {
             const allRecipes = await Recipe.find();
             return allRecipes;
+        },
+        getCurrentUser: async (root, args, { currentUser, User}) => {
+            if (!currentUser) {
+                return null;
+            }
+           
+            const user = await User.findOne({ username: currentUser.username })
+            // pupulate is for injecting whole Recipe into facorites instead of ids 
+            .populate({
+                path: 'favorites',
+                model: 'Recipe'
+            });
+         
+            return user;
         }
     },
     Mutation: {
@@ -52,7 +66,7 @@ exports.resolvers = {
                 password
             }).save();
 
-            return { token: createToken(newUser, process.env.SECRET, '1hr') };
+            return { token: createToken(newUser, process.env.SECRET, '30d') };
         }
     }
 };

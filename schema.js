@@ -1,5 +1,7 @@
+const { gql } = require('apollo-server');
+
 // ! means required
-exports.typeDefs = `
+exports.typeDefs = gql`
     type Recipe {
 
         _id: ID
@@ -23,7 +25,7 @@ exports.typeDefs = `
         
         _id: ID
 
-        username: String! @unique
+        username: String!
 
         password: String!
 
@@ -36,6 +38,8 @@ exports.typeDefs = `
 
     type Query {
         getAllRecipes: [Recipe]
+        
+        getCurrentUser: User
     }
 
     type Token {
