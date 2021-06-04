@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { SIGNUP_USER } from '../../queries';
 import Error from '../../components/Error';
 
 
 
-function Signup() {
+function Signup({ refetch }) {
     const initialState = {
         username: '',
         email: '',
@@ -15,6 +16,7 @@ function Signup() {
     const [formData, setFormData] = useState({...initialState});
     const [gqlError, setError] = useState();
     const [gqlLoading, setGqlLoading] = useState(false);
+    const history = useHistory();
     
 
     const [ mutate ] = useMutation(SIGNUP_USER);
@@ -40,7 +42,9 @@ function Signup() {
         } catch (e) {
             setError(e);
         }
+        await refetch();
         clearState();
+        history.push('/');
     }
 
     const validateForm = function() {

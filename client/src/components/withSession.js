@@ -6,9 +6,10 @@ import { GET_CURRENT_USER } from '../queries';
 
 
 const withSession = Component => props => {
-    const { data } = useQuery(GET_CURRENT_USER);
+    const { data, loading, refetch } = useQuery(GET_CURRENT_USER);
+    if (loading) return null;
     console.log('front end', data);
-    return <Component {...props} />;
+    return <Component {...props} refetch={refetch}/>;
 };
 
    

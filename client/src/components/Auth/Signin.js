@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { SIGNIN_USER } from '../../queries';
 import Error from '../../components/Error';
 
 
-
-function Signin() {
+function Signin({ refetch }) {
     const initialState = {
         username: '',
         password: '',
@@ -13,6 +13,7 @@ function Signin() {
     const [formData, setFormData] = useState({...initialState});
     const [gqlError, setError] = useState();
     const [gqlLoading, setGqlLoading] = useState(false);
+    const history = useHistory();
     
 
     const [ mutate ] = useMutation(SIGNIN_USER);
@@ -38,7 +39,9 @@ function Signin() {
         } catch (e) {
             setError(e);
         }
+        await refetch();
         clearState();
+        history.push('/');
     }
 
     const validateForm = function() {
