@@ -5,12 +5,10 @@ import RecipeItem from '../components/Recipe/RecipeItem';
 
 
 function App() {
-  const { loading, error, data } = useQuery(GET_ALL_RECIPES, {
-
-  });
+  const { loading, error, data } = useQuery(GET_ALL_RECIPES);
   if (loading) return <p>Loading ...</p>;
   if (error) return <p>Error</p>;
-  console.log(data)
+  console.log('recipes data: ', data)
   return (
       <div className="App">
         <h1>Home</h1>
