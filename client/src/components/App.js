@@ -1,6 +1,7 @@
 import './App.css';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_RECIPES } from '../queries'
+import RecipeItem from '../components/Recipe/RecipeItem';
 
 
 function App() {
@@ -13,6 +14,13 @@ function App() {
   return (
       <div className="App">
         <h1>Home</h1>
+        <ul>
+          {
+            data.getAllRecipes.map(recipe => (
+              <RecipeItem key={ recipe._id } recipe={ recipe } />
+            ))
+          }
+        </ul>
       </div>
   );
 }
