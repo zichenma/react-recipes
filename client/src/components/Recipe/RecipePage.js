@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_RECIPE } from '../../queries';
@@ -13,9 +13,17 @@ const RecipePage = () => {
 
     if (loading) return <p>Loading ...</p>;
     if (error) return <p>Error</p>;
-    console.log('recipe data (recipePage): ', data)
+    
     return (
-       <div>Recipe Page</div>
+       <div className="App">
+           <h2>{ data.getRecipe.name }</h2>
+           <p> Category: { data.getRecipe.category }</p>
+           <p> Description: { data.getRecipe.description }</p>
+           <p> Instructions: { data.getRecipe.instructions }</p>
+           <p> Likes: { data.getRecipe.likes }</p>
+           <p> Created By: { data.getRecipe.usename }</p>
+           <button>Like</button>
+       </div>
     )
 }
 export default RecipePage;
