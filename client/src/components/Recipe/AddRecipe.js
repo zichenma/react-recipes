@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { ADD_RECIPE } from '../../queries';
+import { ADD_RECIPE, GET_ALL_RECIPES } from '../../queries';
 import Error from '../../components/Error';
 
 const AddRecipe = ({ session }) => {
@@ -35,11 +35,30 @@ const AddRecipe = ({ session }) => {
         setUsername('');
     }
 
+    const validateForm = () => {
+        const isInvalid = !name || !category || !description || !instructions;
+        return isInvalid;
+    }
+    // after add new recipe and redirect to home page 
+    // the newly added recipe is not getting displaied
+    // so need this update function
+    const updateCache = (cache,  {data : { addRecipe }}) => {
+        const { getAllRecipes  } = cache.readQuery({ query : GET_ALL_RECIPES });
+        cache.writeQuery({
+            query: GET_ALL_RECIPES,
+            data : {
+                getAllRecipes: [addRecipe, ...getAllRecipes]
+            }
+        })
+    }
+
     const handleSubmit = async event => {
         event.preventDefault();
         try {
-          const { data, loading } = await mutate({variables : {  name, category, description, instructions, username } });
-          console.log(data);
+          const { loading } = await mutate({
+              variables : {  name, category, description, instructions, username },
+              update: updateCache
+            });
           setGqlLoading(loading);
         } catch (e) {
             setError(e);
@@ -48,11 +67,6 @@ const AddRecipe = ({ session }) => {
         history.push('/');
     }
     
-    const validateForm = () => {
-        const isInvalid = !name || !category || !description || !instructions;
-        return isInvalid;
-    }
-
     return (<div className="App">
         <h2 className="App">Add Recipe</h2>
         <form className="form" onSubmit={(event) => handleSubmit(event)}>
