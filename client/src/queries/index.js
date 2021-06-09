@@ -13,7 +13,6 @@ query {
 }
 `;
 
-/* Recipes Mutations */
 export const GET_RECIPE = gql`
   query($_id: ID!) {
     getRecipe(_id: $_id) {
@@ -28,6 +27,18 @@ export const GET_RECIPE = gql`
     }
   }
 `;
+
+export const SEARCH_RECIPE = gql`
+  query($searchTerm: String) {
+    searchRecipes(searchTerm: $searchTerm) {
+      _id
+      likes
+      name
+    }
+  }
+`;
+
+/* Recipes Mutations */
 
 export const ADD_RECIPE = gql`
   mutation(
