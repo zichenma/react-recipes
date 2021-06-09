@@ -12,7 +12,7 @@ const createToken =(user, secret, expiresIn) => {
 exports.resolvers = {
     Query: {
         getAllRecipes: async (root, args, { Recipe }) => {
-            const allRecipes = await Recipe.find();
+            const allRecipes = await Recipe.find().sort({createDate: 'desc'});
             return allRecipes;
         },
         getRecipe: async (root, { _id }, { Recipe }) => {

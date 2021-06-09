@@ -24,6 +24,7 @@ export const GET_RECIPE = gql`
       instructions
       createdDate
       likes
+      username
     }
   }
 `;

@@ -1,32 +1,38 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { ADD_RECIPE } from '../../queries';
 import Error from '../../components/Error';
 
 const AddRecipe = ({ session }) => {
-    const [recipeInfo, setRecipeInfo] = useState({
+    const initialState = {
         name : '',
         instructions : '',
         category : 'Breakfast',
         description: '',
-    });
+    };
+    const [recipeInfo, setRecipeInfo] = useState({...initialState});
 
     const [username, setUsername] = useState('');
     const [gqlError, setError] = useState('');
     const [gqlLoading, setGqlLoading] = useState(false);
-
+    const history = useHistory();
     const [ mutate ] = useMutation(ADD_RECIPE);
     const { name, category, description, instructions } = recipeInfo;
     
 
     useEffect(() => {
-        console.log(session.getCurrentUser)
         session.getCurrentUser && setUsername(session.getCurrentUser.username)
     },[username])
 
     const handleChange = event => {
        const { name, value } = event.target;
        setRecipeInfo({...recipeInfo, [name] : value});
+    }
+
+    const clearState = () => {
+        setRecipeInfo(initialState);
+        setUsername('');
     }
 
     const handleSubmit = async event => {
@@ -38,6 +44,8 @@ const AddRecipe = ({ session }) => {
         } catch (e) {
             setError(e);
         }
+        clearState();
+        history.push('/');
     }
     
     const validateForm = () => {

@@ -21,7 +21,7 @@ const RecipePage = () => {
            <p> Description: { data.getRecipe.description }</p>
            <p> Instructions: { data.getRecipe.instructions }</p>
            <p> Likes: { data.getRecipe.likes }</p>
-           <p> Created By: { data.getRecipe.usename }</p>
+           <p> Created By: { data.getRecipe.username }</p>
            <button>Like</button>
        </div>
     )
