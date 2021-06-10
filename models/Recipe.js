@@ -32,4 +32,13 @@ const RecipeSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Recipe', RecipeSchema);
+RecipeSchema.index({
+    '$**': 'text'
+});
+
+const Recipe = mongoose.model('Recipe', RecipeSchema);
+// https://stackoverflow.com/questions/59920729/index-is-not-getting-created-text-index-required-for-text-query-mongoose
+// Must have createIndexes
+Recipe.createIndexes();
+
+module.exports = Recipe;
