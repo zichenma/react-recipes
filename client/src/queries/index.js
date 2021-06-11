@@ -65,13 +65,17 @@ export const ADD_RECIPE = gql`
 `;
 
 /* User Queries */
-
+// favorites must be an object, because the backend using .populate() only asscociate with id to getCurrentUser
 export const GET_CURRENT_USER = gql`
     query {
         getCurrentUser {
             username
             joinDate
             email
+            favorites {
+              _id
+              name
+            }
         }
     }
 `;
