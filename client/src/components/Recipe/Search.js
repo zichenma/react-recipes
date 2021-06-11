@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, ApolloConsumer } from '@apollo/client';
-import { Link } from 'react-router-dom';
 import { SEARCH_RECIPE } from '../../queries';
+import SearchItem from './SearchItem';
 
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -34,10 +34,7 @@ const Search = () => {
                         {
                         searchResults.map(recipe => {
                             return(
-                                <li key={recipe._id}>
-                                    <Link to={`/recipes/${recipe._id}`}><h4>{recipe.name}</h4></Link>
-                                    <p>{recipe.likes}</p>
-                                </li>
+                               < SearchItem key={recipe.id} {...recipe}/>
                             )
                         }) 
                         }
