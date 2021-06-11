@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { ADD_RECIPE, GET_ALL_RECIPES } from '../../queries';
 import Error from '../../components/Error';
+import withAuth from '../withAuth';
 
 const AddRecipe = ({ session }) => {
     const initialState = {
@@ -85,4 +86,4 @@ const AddRecipe = ({ session }) => {
     </div>)
 }
 
-export default AddRecipe;
+export default withAuth(session => session && session.getCurrentUser)(AddRecipe);

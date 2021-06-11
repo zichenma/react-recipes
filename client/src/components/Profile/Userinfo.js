@@ -31,20 +31,16 @@ const formatDate = unixtimestamp => {
     return convdataTime;
 }
 
-const isCurrentUserExist = session => (session && session.getCurrentUser);
-
 
 const UserInfo = ({ session }) => (
     <div className="App">
         <h3>User Info</h3>
-        <p>Username: {isCurrentUserExist(session) && session.getCurrentUser.username}</p>
-        <p>Email: { isCurrentUserExist(session) && session.getCurrentUser.email}</p>
-        <p>Join Date: { isCurrentUserExist(session) && formatDate(session.getCurrentUser.joinDate)}</p>
+        <p>Username: { session.getCurrentUser.username}</p>
+        <p>Email: { session.getCurrentUser.email}</p>
+        <p>Join Date: { formatDate(session.getCurrentUser.joinDate)}</p>
         <ul>
-            <h3>{ isCurrentUserExist(session) && session.getCurrentUser.username}'s Favorites</h3>
-            {
-                isCurrentUserExist(session) && session.getCurrentUser.favorites.map(favorite => {
-             
+            <h3>{ session.getCurrentUser.username}'s Favorites</h3>
+            { session.getCurrentUser.favorites.map(favorite => {
                     return(
                         <li key={favorite._id}>
                             <Link to={`/recipes/${favorite._id}`}>
@@ -55,7 +51,7 @@ const UserInfo = ({ session }) => (
                 })
             }
             {   
-                isCurrentUserExist(session) && !session.getCurrentUser.favorites.length && 
+                !session.getCurrentUser.favorites.length && 
                 <p>
                     <strong>You have no favorites currently. Go add Some!</strong>
                 </p>
