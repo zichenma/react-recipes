@@ -14,8 +14,6 @@ function Signin({ refetch }) {
     const [gqlError, setError] = useState();
     const [gqlLoading, setGqlLoading] = useState(false);
     const history = useHistory();
-    
-
     const [ mutate ] = useMutation(SIGNIN_USER);
 
     const handleChange = event => {

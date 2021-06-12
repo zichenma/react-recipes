@@ -64,6 +64,14 @@ export const ADD_RECIPE = gql`
   }
 `;
 
+export const DELETE_USER_RECIPE = gql`
+ mutation($_id: ID!) {
+   deleteUserRecipe(_id: $_id) {
+     _id
+   }
+ }
+`;
+
 /* User Queries */
 // favorites must be an object, because the backend using .populate() only asscociate with id to getCurrentUser
 export const GET_CURRENT_USER = gql`
