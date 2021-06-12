@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { ADD_RECIPE, GET_ALL_RECIPES } from '../../queries';
+import { ADD_RECIPE, GET_ALL_RECIPES, GET_USER_RECIPES } from '../../queries';
 import Error from '../../components/Error';
 import withAuth from '../withAuth';
 
@@ -18,7 +18,13 @@ const AddRecipe = ({ session }) => {
     const [gqlError, setError] = useState('');
     const [gqlLoading, setGqlLoading] = useState(false);
     const history = useHistory();
-    const [ mutate ] = useMutation(ADD_RECIPE);
+    const [ mutate ] = useMutation(ADD_RECIPE, { refetchQueries : [
+        { 
+          query : GET_USER_RECIPES,         
+          variables: { username } 
+        },
+
+    ]});
     const { name, category, description, instructions } = recipeInfo;
     
 
