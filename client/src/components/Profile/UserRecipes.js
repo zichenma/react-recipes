@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_USER_RECIPES, DELETE_USER_RECIPE } from '../../queries'
+import { GET_USER_RECIPES, DELETE_USER_RECIPE, GET_ALL_RECIPES, GET_CURRENT_USER } from '../../queries'
 import { Link } from 'react-router-dom';
 
  
@@ -10,7 +10,10 @@ const UserRecipes = ({ username }) => {
     const [deleteLoading, setDeleteLoading] = useState(false);
 
     const { loading, error, data } = useQuery(GET_USER_RECIPES,  {variables: { username } });
-    const [ mutate ] = useMutation(DELETE_USER_RECIPE);
+    const [ mutate ] = useMutation(DELETE_USER_RECIPE, { refetchQueries : [
+        { query : GET_ALL_RECIPES }, 
+        { query : GET_CURRENT_USER }
+    ]});
 
 
     const updateCache = (cache, {data : { deleteUserRecipe }})  => {
