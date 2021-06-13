@@ -7,7 +7,7 @@ const Search = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
 
-    const { loading, error, data } = useQuery(SEARCH_RECIPE, {variables: searchTerm });
+    const { loading, error } = useQuery(SEARCH_RECIPE, {variables: searchTerm });
 
     const handleOnChange = async (event, client) => {
         const { value } = event.target;

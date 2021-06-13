@@ -23,7 +23,6 @@ exports.resolvers = {
 
         searchRecipes: async (root, { searchTerm }, { Recipe }) => {
             if (searchTerm) {
-                console.log(searchTerm)
                 const searchResults = await Recipe.find({
                     $text: { $search: searchTerm }
                 },{

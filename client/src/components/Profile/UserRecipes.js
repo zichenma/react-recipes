@@ -47,7 +47,7 @@ const UserRecipes = ({ username }) => {
     if (deleteError) return <p>Something wrong with deletion</p>
     return (
         <ul>
-        <h3>You Recipes</h3>
+        <h3>Your Recipes</h3>
         {!data.getUserRecipes.length && <p><strong>You have not added any recipes yet</strong></p>}
         {
             data.getUserRecipes.map(recipe => (
