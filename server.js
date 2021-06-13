@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const { ApolloServer } = require('apollo-server-express');
 const { typeDefs } = require('./schema');
 const { resolvers } = require('./resolvers');
+const path = require('path');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const Recipe = require('./models/Recipe');
@@ -17,6 +18,12 @@ mongoose.connect(process.env.MONGO_URI, {autoIndex: false})
 .then(() => console.log('DB connected'))
 .catch(err => console.error(err));
 
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    })
+}
 
 // Initialize application
 const PORT = process.env.PORT || 4444;
@@ -29,11 +36,6 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions));
-
-
-
-
-
 
 
 const getUser = async (token) => {
@@ -70,3 +72,5 @@ server.applyMiddleware({ app });
 app.listen({ port: PORT }, () =>
   console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
 )
+
+
