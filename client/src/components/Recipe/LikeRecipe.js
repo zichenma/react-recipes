@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { LIKE_RECIPE } from '../../queries'
+import { GET_RECIPE, LIKE_RECIPE, UNLIKE_RECIPE } from '../../queries'
 import withSession from '../withSession';
 
 
@@ -10,7 +10,8 @@ const LikeRecipe = ({session, _id, refetch }) => {
     const [username, setUsername] = useState('');
     const [liked, setLiked] = useState(false);
 
-    const [ mutate ]= useMutation(LIKE_RECIPE);
+    const [ likeMutate ]= useMutation(LIKE_RECIPE);
+    const [ unlikeMutate ]= useMutation(UNLIKE_RECIPE);
   
     useEffect(() => {
         if (session.getCurrentUser) {
@@ -22,27 +23,50 @@ const LikeRecipe = ({session, _id, refetch }) => {
         }
     },[username]);
 
+    const updateLike  = (cache, {data : { likeRecipe }}) => {
+        const { getRecipe } = cache.readQuery({query: GET_RECIPE, variables: {_id} });
+        cache.writeQuery({
+            query: GET_RECIPE,
+            variables: { _id },
+            data: {
+              getRecipe: { ...getRecipe, likes: likeRecipe.likes + 1 }  
+            }
+        })
+    }
+
+     const updateUnLike = (cache, {data : { unlikeRecipe }}) => {
+        const { getRecipe } = cache.readQuery({query: GET_RECIPE, variables: {_id} });
+        cache.writeQuery({
+            query: GET_RECIPE,
+            variables: { _id },
+            data: {
+              getRecipe: { ...getRecipe, likes: unlikeRecipe.likes - 1 }  
+            }
+        })
+    }
+
     const handleLike = async () => {
         setLiked(!liked);
         if (!liked) {
             try {
-                await mutate({ variables: { _id, username } });
-                
+                await likeMutate({ variables: { _id, username }, update: updateLike  });
             } catch (e) {
                 console.error(e);
             }
-            // must be await
-           await refetch();
         } else {
-            // unlike will be here
-            console.log('unlike')
+            try {
+                await unlikeMutate({ variables: { _id, username }, update: updateUnLike });
+            } catch (e) {
+                console.error(e);
+            }
         }
+        await refetch();
     }
 
     return(
         username && (
-            <button onClick={handleLike} >
-                {liked ? 'Liked' : 'Like'}
+            <button onClick={handleLike}>
+                {liked ? 'Unlike' : 'Like'}
             </button>  
         )
     )
