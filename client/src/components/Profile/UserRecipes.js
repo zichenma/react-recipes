@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_USER_RECIPES, DELETE_USER_RECIPE, GET_ALL_RECIPES, GET_CURRENT_USER } from '../../queries'
 import { Link } from 'react-router-dom';
+import Spinner from '../Spinner';
 
  
 const UserRecipes = ({ username }) => {
@@ -42,7 +43,7 @@ const UserRecipes = ({ username }) => {
        }
     }
 
-    if (loading) return <p>Loading ...</p>;
+    if (loading) return <Spinner />;
     if (error) return <p>Error</p>;
     if (deleteError) return <p>Something wrong with deletion</p>
     return (

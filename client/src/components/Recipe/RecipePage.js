@@ -3,6 +3,7 @@ import { useRouteMatch } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_RECIPE } from '../../queries';
 import LikeRecipe from './LikeRecipe';
+import Spinner from '../Spinner';
 
 const RecipePage = ({refetch}) => {
   
@@ -12,7 +13,7 @@ const RecipePage = ({refetch}) => {
         variables: { _id },
     });
 
-    if (loading) return <p>Loading ...</p>;
+    if (loading) return <Spinner />;
     if (error) return <p>Error</p>;
     
     return (
