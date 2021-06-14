@@ -101,7 +101,6 @@ const AddRecipe = ({ session }) => {
                 content={instructions}
                 onChange={ handleEditorChange }
             />
-            {/* <textarea type="text" name="instructions" placeholder="Add instructions" value={instructions} onChange={handleChange}></textarea> */}
             <button type="submit" className="button-primary" disabled={ gqlLoading || validateForm() }>Submit</button>
             { gqlError && <Error error={ gqlError } />}
         </form>
