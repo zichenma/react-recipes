@@ -55,7 +55,8 @@ const UserRecipes = ({ username }) => {
                 <li key={recipe._id}>
                     <Link to={`/recipes/${recipe._id}`}><p>{ recipe.name }</p></Link>
                     <p style={{ marginBottom :'0'}}>{ recipe.likes }</p>
-                    <p className="delete-button" onClick={() => handleDelete(recipe._id)}>{deleteLoading ? 'deleting...' : 'X'}</p>
+                    <button className="button-primary">Update</button>
+                    <p className="delete-button" onClick={() => handleDelete(recipe._id)}><strong>{deleteLoading ? 'deleting...' : 'X'}</strong></p>
                 </li>
             ))
         }
