@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, ApolloConsumer } from '@apollo/client';
 import { SEARCH_RECIPE } from '../../queries';
 import SearchItem from './SearchItem';
+import Spinner from '../Spinner';
 
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -21,7 +22,7 @@ const Search = () => {
         setSearchResults(searchRecipes);
     }
 
-    if (loading) return <p>Loading ...</p>;
+    if (loading) return <Spinner />;
     if (error) return <p>Error</p>;
 
     return (
@@ -29,7 +30,7 @@ const Search = () => {
           {
               client => (
                 <div className="App">
-                    <input type="search" value={searchTerm} onChange={event => handleOnChange(event, client)} placeholder="Search for Recipes"/>
+                    <input type="search" className="search" value={searchTerm} onChange={event => handleOnChange(event, client)} placeholder="Search for Recipes"/>
                     <ul>
                         {
                         searchResults.map(recipe => {
