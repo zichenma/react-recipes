@@ -5,6 +5,7 @@ export const recipeFragments = {
         fragment CompleteRecipe on Recipe {
             _id
             name
+            imageUrl
             category
             description
             instructions
@@ -14,9 +15,9 @@ export const recipeFragments = {
         }
     `,
     like : gql`
-    fragment LikeRecipe on Recipe {
-        _id
-        likes
-    }
+        fragment LikeRecipe on Recipe {
+            _id
+            likes
+        }
     `
 };

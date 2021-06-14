@@ -38,11 +38,13 @@ export const ADD_RECIPE = gql`
   mutation(
     $name: String!, 
     $description: String!, 
+    $imageUrl: String!,
     $category: String!, 
     $instructions: String!, 
     $username: String) {
     addRecipe(
       name: $name, 
+      imageUrl: $imageUrl
       description: $description, 
       category: $category, 
       instructions: $instructions, 

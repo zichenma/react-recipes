@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
-
 const bcrypt = require('bcrypt');
-const e = require('express');
+
 
 const createToken =(user, secret, expiresIn) => {
     
@@ -61,9 +60,10 @@ exports.resolvers = {
         }
     },
     Mutation: {
-        addRecipe: async (root, { name, description, category, instructions, username }, { Recipe }) => {
+        addRecipe: async (root, { name, imageUrl, description, category, instructions, username }, { Recipe }) => {
             const newRecipe = await new Recipe({
                 name, 
+                imageUrl,
                 description,
                 category,
                 instructions,

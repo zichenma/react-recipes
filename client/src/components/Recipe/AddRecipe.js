@@ -8,6 +8,7 @@ import withAuth from '../withAuth';
 const AddRecipe = ({ session }) => {
     const initialState = {
         name : '',
+        imageUrl : '',
         instructions : '',
         category : 'Breakfast',
         description: '',
@@ -25,7 +26,7 @@ const AddRecipe = ({ session }) => {
         },
 
     ]});
-    const { name, category, description, instructions } = recipeInfo;
+    const { name, imageUrl, category, description, instructions } = recipeInfo;
     
 
     useEffect(() => {
@@ -43,7 +44,7 @@ const AddRecipe = ({ session }) => {
     }
 
     const validateForm = () => {
-        const isInvalid = !name || !category || !description || !instructions;
+        const isInvalid = !name || !imageUrl || !category || !description || !instructions;
         return isInvalid;
     }
     // after add new recipe and redirect to home page 
@@ -63,7 +64,7 @@ const AddRecipe = ({ session }) => {
         event.preventDefault();
         try {
           const { loading } = await mutate({
-              variables : {  name, category, description, instructions, username },
+              variables : {  name, imageUrl, category, description, instructions, username },
               update: updateCache
             });
           setGqlLoading(loading);
@@ -78,6 +79,7 @@ const AddRecipe = ({ session }) => {
         <h2 className="App">Add Recipe</h2>
         <form className="form" onSubmit={(event) => handleSubmit(event)}>
             <input type="text" name="name" placeholder="Recipe Name" value={name} onChange={handleChange}/>
+            <input type="text" name="imageUrl" placeholder="Recipe Image URL" value={imageUrl} onChange={handleChange}/>
             <select name="category" value={category} onChange={handleChange}>
                 <option value="Breakfast">Breakfast</option>
                 <option value="Lunch">Lunch</option>
