@@ -3,15 +3,14 @@ import { Link } from 'react-router-dom';
 
 
 
-const imageStyle = imageUrl => ({
-  backgroundImage: `${imageUrl}`,
-  backgroundPosition: 'center center',
-  backgroundSize: 'cover',
-  backgroundRepeat: 'no-repeat'
-})
-
 const RecipeItem = recipe => {
     const { _id, imageUrl, name, category } = recipe.recipe;
+    const imageStyle = imageUrl => ({
+      backgroundImage: `${imageUrl}`,
+      backgroundPosition: 'center center',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat'
+    });
     return (
         <li
           style={imageStyle(imageUrl)} 

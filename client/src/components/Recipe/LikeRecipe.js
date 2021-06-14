@@ -65,7 +65,7 @@ const LikeRecipe = ({session, _id, refetch }) => {
 
     return(
         username && (
-            <button onClick={handleLike}>
+            <button className="like-button" onClick={handleLike}>
                 {liked ? 'Unlike' : 'Like'}
             </button>  
         )
