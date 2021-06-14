@@ -11,20 +11,18 @@ const RecipePage = ({refetch}) => {
     const { loading, error, data } = useQuery(GET_RECIPE,  {
         variables: { _id },
     });
-    const imageStyle = imageUrl => ({
-        backgroundImage: `${imageUrl}`,
-        backgroundPosition: 'center center',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat'
-     })
-
+    
     if (loading) return <p>Loading ...</p>;
     if (error) return <p>Error</p>;
     
     return (
        <div className="App">
            <div 
-           style={imageStyle(data.getRecipe.imageUrl)}
+            style={{
+                background: `url(${
+                  data.getRecipe.imageUrl
+                }) center center / cover no-repeat`
+              }}
            className="recipe-image">
            </div>
            <div className="recipe">

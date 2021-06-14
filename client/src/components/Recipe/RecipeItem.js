@@ -13,8 +13,8 @@ const RecipeItem = recipe => {
     });
     return (
         <li
-          style={imageStyle(imageUrl)} 
-          className="card"
+        style={{ background: `url(${imageUrl}) center center / cover no-repeat` }}
+        className="card"
         >
         <span className={ category }> 
             { category } 
