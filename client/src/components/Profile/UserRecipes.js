@@ -7,6 +7,7 @@ import Spinner from '../Spinner';
  
 const UserRecipes = ({ username }) => {
     const initialState = {
+        _id: '',
         name : '',
         imageUrl : '',
         category : '',
@@ -43,6 +44,11 @@ const UserRecipes = ({ username }) => {
         setRecipeInfo({...recipeInfo, [name] : value});
      }
 
+    const loadRecipe = recipe => {
+        setIsOpenModal(true);
+        setRecipeInfo(recipe);
+    }
+
     const closeModal = () => {
         setIsOpenModal(false);
     }
@@ -64,7 +70,7 @@ const UserRecipes = ({ username }) => {
     if (deleteError) return <p>Something wrong with deletion</p>
     return (
         <ul>
-        {isOpenModal && <EditRecipeModal closeModal={closeModal} handleChange={handleChange}/>}
+        {isOpenModal && <EditRecipeModal recipe={recipeInfo} closeModal={closeModal} handleChange={handleChange}/>}
         <h3>Your Recipes</h3>
         {!data.getUserRecipes.length && <p><strong>You have not added any recipes yet</strong></p>}
         {
@@ -72,7 +78,7 @@ const UserRecipes = ({ username }) => {
                 <li key={recipe._id}>
                     <Link to={`/recipes/${recipe._id}`}><p>{ recipe.name }</p></Link>
                     <p style={{ marginBottom :'0'}}>{ recipe.likes }</p>
-                    <button className="button-primary" onClick={() => setIsOpenModal(true)}>Update</button>
+                    <button className="button-primary" onClick={() => loadRecipe(recipe)}>Update</button>
                     <p className="delete-button" onClick={() => handleDelete(recipe._id)}><strong>{deleteLoading ? 'deleting...' : 'X'}</strong></p>
                 </li>
             ))
@@ -81,26 +87,25 @@ const UserRecipes = ({ username }) => {
     )
 }
 
-const EditRecipeModal = ({ handleChange, closeModal }) => (
+const EditRecipeModal = ({ recipe, handleChange, closeModal }) => (
     <div className="modal modal-open">
       <div className="modal-inner">
         <div className="modal-content">
           <form className="modal-content-inner">
             <h4>Edit Recipe</h4>
             <label htmlFor="name">Recipe Name</label>
-            <input type="text" name="name" onChange={handleChange} />
+            <input type="text" name="name" onChange={handleChange} value={recipe.name} />
             <label htmlFor="imageUrl">Recipe Image</label>
-            <input type="text" name="imageUrl" onChange={handleChange} />
+            <input type="text" name="imageUrl" onChange={handleChange} value={recipe.imageUrl}/>
             <label htmlFor="category">Category of Recipe</label>
-            <select name="category" onChange={handleChange}>
+            <select name="category" onChange={handleChange} value={recipe.category}>
               <option value="Breakfast">Breakfast</option>
               <option value="Lunch">Lunch</option>
               <option value="Dinner">Dinner</option>
               <option value="Snack">Snack</option>
             </select>
             <label htmlFor="description">Recipe Description</label>
-            <input type="text" name="description" onChange={handleChange} />
-  
+            <input type="text" name="description" onChange={handleChange} value={recipe.description}/>
             <hr />
             <div className="modal-buttons">
               <button type="submit" className="button-primary">

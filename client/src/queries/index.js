@@ -105,6 +105,9 @@ export const GET_USER_RECIPES = gql`
         _id
         name
         likes
+        imageUrl
+        category
+        description
       }
     }
 `;
