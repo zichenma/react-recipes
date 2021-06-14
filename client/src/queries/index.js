@@ -83,6 +83,19 @@ export const DELETE_USER_RECIPE = gql`
  }
 `;
 
+export const UPDATE_USER_RECIPE = gql`
+ mutation($_id: ID!, $name: String!, $imageUrl: String!, $description: String!, $category: String!) {
+   updateUserRecipe(_id: $_id, name: $name, imageUrl: $imageUrl, description: $description, category: $category) {
+    _id
+    name
+    likes
+    category
+    imageUrl
+    description
+   }
+ }
+`;
+
 /* User Queries */
 // favorites must be an object, because the backend using .populate() only asscociate with id to getCurrentUser
 export const GET_CURRENT_USER = gql`
