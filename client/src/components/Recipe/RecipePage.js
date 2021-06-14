@@ -11,7 +11,7 @@ const RecipePage = ({refetch}) => {
     const { loading, error, data } = useQuery(GET_RECIPE,  {
         variables: { _id },
     });
-    
+
     if (loading) return <p>Loading ...</p>;
     if (error) return <p>Error</p>;
     
@@ -49,18 +49,10 @@ const RecipePage = ({refetch}) => {
                { data.getRecipe.description }
                </blockquote>
                <h3 className="recipe-instruction__title">Instructions</h3>
-               <div className="recipe-instructions">{data.getRecipe.instructions}</div>
+               <div className="recipe-instructions" dangerouslySetInnerHTML={{__html : data.getRecipe.instructions}} />
                <LikeRecipe _id={_id} refetch={refetch}/>
            </div>
        </div>
     )
 }
 export default RecipePage;
-
-
-{/* <h2></h2>
-<p> Category: { data.getRecipe.category }</p>
-<p> Description: </p>
-<p> Instructions: { data.getRecipe.instructions }</p>
-
-<p> </p> */}

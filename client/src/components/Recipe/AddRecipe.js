@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ADD_RECIPE, GET_ALL_RECIPES, GET_USER_RECIPES } from '../../queries';
 import Error from '../../components/Error';
 import withAuth from '../withAuth';
@@ -36,6 +38,11 @@ const AddRecipe = ({ session }) => {
     const handleChange = event => {
        const { name, value } = event.target;
        setRecipeInfo({...recipeInfo, [name] : value});
+    }
+
+    const handleEditorChange = (event, editor ) => {
+        const data = editor.getData();
+        setRecipeInfo({...recipeInfo, instructions : data });
     }
 
     const clearState = () => {
@@ -87,7 +94,14 @@ const AddRecipe = ({ session }) => {
                 <option value="Snack">Snack</option>
             </select>
             <input type="text" name="description" placeholder="Add description" value={description} onChange={handleChange}/>
-            <textarea type="text" name="instructions" placeholder="Add instructions" value={instructions} onChange={handleChange}></textarea>
+            <label htmlFor="instructions">Add Instructions</label>
+            <CKEditor
+                editor={ ClassicEditor }
+                name="instructions"
+                content={instructions}
+                onChange={ handleEditorChange }
+            />
+            {/* <textarea type="text" name="instructions" placeholder="Add instructions" value={instructions} onChange={handleChange}></textarea> */}
             <button type="submit" className="button-primary" disabled={ gqlLoading || validateForm() }>Submit</button>
             { gqlError && <Error error={ gqlError } />}
         </form>
